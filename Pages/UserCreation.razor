@@ -1,0 +1,83 @@
+﻿@page "/createuser"
+@inject HttpClient client;
+@using System.ComponentModel.DataAnnotations
+@using Apollo.Tiers.DataAccess.Models;
+
+@if (ValidSubmit)
+{
+    <div class="demo-alert demo-alert-success" role="alert">
+        The form was submitted successfully.
+    </div>
+}
+else
+{
+    if (ShowCreateEdit)
+    {
+<div class="formCss">
+    <TelerikForm Model="@user"
+                 OnValidSubmit="@HandleValidSubmit"
+                 OnInvalidSubmit="@HandleInvalidSubmit">
+        <FormValidation>
+            <DataAnnotationsValidator></DataAnnotationsValidator>
+        </FormValidation>
+        <FormItems>
+            <FormItem Field="@nameof(User.FirstName)"></FormItem>
+            <FormItem Field="@nameof(User.LastName)"></FormItem>
+            <FormItem Field="@nameof(User.Email)">
+                <Template>
+                    <label for="mail" class="k-label k-form-label">Email*:</label>
+                    <TelerikTextBox Id="mail" @bind-Value="@user.Email" InputMode="email" PlaceHolder="example@domain.com"></TelerikTextBox>
+                    <TelerikValidationMessage For="@(() => user.Email)"></TelerikValidationMessage>
+                </Template>
+            </FormItem>
+            <FormItem Field="@nameof(User.Password)">
+                <Template>
+                    <label for="pass" class="k-label k-form-label">Password*:</label>
+                    <TelerikTextBox Id="pass" @bind-Value="@user.Password" Password="true"></TelerikTextBox>
+                    <TelerikValidationMessage For="@(() => user.Password)"></TelerikValidationMessage>
+                </Template>
+            </FormItem>
+            <FormItem>
+                <Template>
+                    <label for="role">Role:</label>
+                    <TelerikDropDownList @bind-Value="@user.Role"
+                                         DefaultText="Choose a role"
+                                         Data="@roles"
+                                         PopupHeight=""
+                                         TextField="Role1" ValueField="RoleId"
+                                         Id="role">
+                    </TelerikDropDownList>
+                </Template>
+            </FormItem>
+            <FormItem Field="@nameof(User.UserId)" />
+
+        </FormItems>
+    </TelerikForm>
+</div>
+    }
+    else
+    {
+<TelerikGrid Data="@users" Height="400px"
+             Pageable="true" Sortable="true" Groupable="true"
+             FilterMode="Telerik.Blazor.GridFilterMode.FilterRow"
+             Resizable="true" Reorderable="true" OnDelete="@DeleteHandler" ConfirmDelete="true" >
+    <GridToolBar>
+        <GridCommandButton Command="AddUser" OnClick="@CreateCommandHandler" Icon="info">Add New Record</GridCommandButton>
+     
+    </GridToolBar>
+
+    <GridColumns>
+        <GridColumn Field="FirstName" Width="120px" Title=" First Name" />
+        <GridColumn Field="LastName" Title="Last Name" />
+        <GridColumn Field="Email" Title="Email" />
+        <GridColumn Field="UserId" Title="User Id" />
+        <GridColumn Field="RoleNavigation.Role1" Title="Role" />
+        <GridCommandColumn>
+            <GridCommandButton Command="EditUser" Icon="edit" ShowInEdit="false" OnClick="@EditCommandHandler">Edit</GridCommandButton>
+            <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+        </GridCommandColumn>
+
+    </GridColumns>
+</TelerikGrid>
+    }
+}

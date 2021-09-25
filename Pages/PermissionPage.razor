@@ -1,0 +1,14 @@
+﻿@page "/changeuserpermission"
+@inject HttpClient client;
+@using System.ComponentModel.DataAnnotations
+@using Apollo.Tiers.DataAccess.Models;
+
+
+<TelerikTreeView Data="@FlatData"
+                 CheckBoxMode="@TreeViewCheckBoxMode.Multiple"
+                 @bind-CheckedItems="@checkedItems" CheckOnClick="true" CheckChildren="true" CheckParents="true">
+    <TreeViewBindings>
+        <TreeViewBinding IdField="Id"  ParentIdField="Parentpage" ExpandedField="Expanded" HasChildrenField="" TextField="Page1" IconField="Icon" />
+    </TreeViewBindings>
+</TelerikTreeView>
+

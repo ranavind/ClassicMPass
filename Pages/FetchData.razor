@@ -1,0 +1,29 @@
+﻿@page "/fetchdata"
+@inherits FetechDataBase;
+
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    
+
+    <TelerikGrid Data = "@forecasts" Height = "400px"
+    Pageable = "true" Sortable = "true" Groupable = "true"
+    FilterMode = "Telerik.Blazor.GridFilterMode.FilterRow"
+    Resizable = "true" Reorderable = "true">
+    <GridColumns>
+    <GridColumn Field = "Date" Width = "120px" />
+    <GridColumn Field = "TemperatureC" Title = "TemperatureC" Groupable = "false" />
+    <GridColumn Field = "TemperatureF" Title = "TemperatureF" />
+    <GridColumn Field = "Summary" Title = "Summary" />
+    </GridColumns>
+    </TelerikGrid >
+}
+
